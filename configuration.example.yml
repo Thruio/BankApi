@@ -2,6 +2,11 @@ Selenium:
     Host: http://localhost:4444/wd/hub
     BrowserDriver: firefox
 Accounts:
+    Business Account:
+        connector: CashPlusBankAccount
+        auth:
+            username: 'username'
+            password: 'password'
     Account Name Here:
         connector: CooperativeBankAccount
         auth:
