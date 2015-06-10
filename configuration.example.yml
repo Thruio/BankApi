@@ -1,0 +1,15 @@
+Selenium:
+    Host: http://localhost:4444/wd/hub
+    BrowserDriver: firefox
+Accounts:
+    Account Name Here:
+        connector: CooperativeBankAccount
+        auth:
+            sort: '012345'
+            acct: '98765432'
+            security: '0000'
+            memorable_date: '2015-01-01'
+            first_school: 'first school'
+            last_school: 'last school'
+            birth_place: berlin
+            memorable_name: boris
