@@ -2,7 +2,7 @@
 
 require_once("bootstrap.php");
 
-$settings = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(APP_ROOT . "/accounts.yml"));
+$settings = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(APP_ROOT . "/configuration.yml"));
 
 $host = $settings['Selenium']['Host']; // this is the default
 if(isset($settings['Selenium']['BrowserDriver'])){
