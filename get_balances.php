@@ -21,7 +21,8 @@ if(isset($settings['Selenium']['BrowserDriver'])){
 
 $seleniumDriver = RemoteWebDriver::create($host, $desiredCapabilities);
 
-foreach($settings['accounts'] as $account_name => $details){
+foreach($settings['Accounts'] as $account_name => $details){
+  echo "Logging into {$account_name}...\n";
   $connectorName = "\\Thru\\Bank\\" . $details['connector'];
   $connector = new $connectorName();
   if(!$connector instanceof \Thru\Bank\BaseBankAccount){
