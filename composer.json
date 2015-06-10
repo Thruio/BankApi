@@ -1,0 +1,25 @@
+{
+  "name": "matthewbaggett/bank-interrogator",
+  "authors": [
+    {
+        "name": "Matthew Baggett",
+        "email": "matthew@baggett.me"
+    }
+  ],
+  "require": {
+    "facebook/webdriver": "dev-master",
+    "thru.io/active_record": "dev-master",
+    "symfony/yaml": "2.7.0",
+    "phpunit/phpunit": "4.7.2"
+  },
+  "autoload"   : {
+    "psr-4": {
+      "Thru\\Bank\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Thru\\Bank\\Test\\": "tests/"
+    }
+  }
+}
