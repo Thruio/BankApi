@@ -24,11 +24,17 @@ $seleniumDriver = RemoteWebDriver::create($host, $desiredCapabilities);
 foreach($settings['Accounts'] as $account_name => $details){
   echo "Logging into {$account_name}...\n";
   $connectorName = "\\Thru\\Bank\\" . $details['connector'];
-  $connector = new $connectorName();
+  $connector = new $connectorName($account_name);
   if(!$connector instanceof \Thru\Bank\BaseBankAccount){
     throw new Exception("Connector is not instance of BaseBankAccount");
   }
   $connector->setAuth($details['auth']);
   $connector->setSelenium($seleniumDriver);
-  $connector->run();
+  try {
+    $connector->run();
+  }catch(\Thru\Bank\BankAccountAuthException $authException){
+    echo $authException->getMessage();
+  }
+
+  echo "\n\n\n";
 }

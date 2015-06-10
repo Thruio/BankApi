@@ -4,8 +4,8 @@ namespace Thru\Bank;
 class CooperativeBankAccount extends BaseBankAccount {
   protected $baseUrl = "https://personal.co-operativebank.co.uk/CBIBSWeb/start.do";
 
-  public function __construct(){
-    parent::__construct();
+  public function __construct($accountName){
+    parent::__construct($accountName);
   }
 
   public function run(){

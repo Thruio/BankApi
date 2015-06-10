@@ -5,6 +5,7 @@ class BaseBankAccount {
   protected $auth;
   protected $selenium;
   private $screenshotCount;
+  private $accountName;
 
   public function setAuth($auth){
     $this->auth = $auth;
@@ -31,16 +32,21 @@ class BaseBankAccount {
 
   public function takeScreenshot($name){
     $this->screenshotCount++;
+    $name = "{$this->getAccountName()}-{$this->screenshotCount}-{$name}";
     $name = str_replace(" ", "-", $name);
-    $this->getSelenium()->takeScreenshot(APP_ROOT . "/screenshots/{$this->screenshotCount}-{$name}.png");
+    $this->getSelenium()->takeScreenshot(APP_ROOT . "/screenshots/{$name}.png");
   }
 
   public function run(){
 
   }
 
-  public function __construct(){
+  public function __construct($accountName){
+    $this->accountName = $accountName;
+  }
 
+  public function getAccountName(){
+    return $this->accountName;
   }
 
 
