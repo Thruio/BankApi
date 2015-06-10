@@ -1,5 +1,7 @@
 <?php
-namespace Thru\Bank;
+namespace Thru\Bank\Banking;
+
+use Thru\Bank\Models\Run;
 
 class BaseBankAccount {
   protected $auth;
@@ -37,8 +39,12 @@ class BaseBankAccount {
     $this->getSelenium()->takeScreenshot(APP_ROOT . "/screenshots/{$name}.png");
   }
 
-  public function run(){
+  public function run(Run $run){
 
+  }
+
+  public function cleanUp(){
+    $this->getSelenium()->close();
   }
 
   public function __construct($accountName){

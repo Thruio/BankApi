@@ -1,6 +1,6 @@
 <?php
 
-namespace Thru\Bank;
+namespace Thru\Bank\Banking;
 
 class BankAccountAuthException extends BankAccountException {
 

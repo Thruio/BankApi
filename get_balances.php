@@ -21,20 +21,32 @@ if(isset($settings['Selenium']['BrowserDriver'])){
 
 $seleniumDriver = RemoteWebDriver::create($host, $desiredCapabilities);
 
+$run = new \Thru\Bank\Models\Run();
+
+$run->save();
+
 foreach($settings['Accounts'] as $account_name => $details){
   echo "Logging into {$account_name}...\n";
-  $connectorName = "\\Thru\\Bank\\" . $details['connector'];
+
+  $account = \Thru\Bank\Models\Account::FetchOrCreateByName($account_name);
+  if(strtotime($account->last_check) >= time() - 60*60){
+    echo " > Skipping, ran less than 60 minutes ago.\n\n";
+    continue;
+  }
+  $connectorName = "\\Thru\\Bank\\Banking\\" . $details['connector'];
   $connector = new $connectorName($account_name);
-  if(!$connector instanceof \Thru\Bank\BaseBankAccount){
+  if(!$connector instanceof \Thru\Bank\Banking\BaseBankAccount){
     throw new Exception("Connector is not instance of BaseBankAccount");
   }
   $connector->setAuth($details['auth']);
   $connector->setSelenium($seleniumDriver);
   try {
-    $connector->run();
-  }catch(\Thru\Bank\BankAccountAuthException $authException){
+    $connector->run($run);
+  }catch(\Thru\Bank\Banking\BankAccountAuthException $authException){
     echo $authException->getMessage();
   }
 
-  echo "\n\n\n";
+  echo "\n\n";
 }
+
+$run->end();

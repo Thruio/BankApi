@@ -1,5 +1,5 @@
 <?php
-namespace Thru\Bank;
+namespace Thru\Bank\Banking;
 
 class SmileBankAccount extends CooperativeBankAccount {
   public function __construct($accountName){
