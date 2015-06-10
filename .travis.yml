@@ -4,7 +4,7 @@ php: 5.5
 
 before_script :
   - composer install
-  - mysql -e 'create database bank-api-test;'
+  - mysql -e 'create database bank_api_test;'
   - mysql -e "use mysql; SET PASSWORD FOR 'travis'@'localhost' = PASSWORD('travis'); FLUSH PRIVILEGES;"
 
 after_script:
