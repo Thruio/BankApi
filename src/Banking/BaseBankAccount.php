@@ -44,7 +44,6 @@ class BaseBankAccount {
   }
 
   public function cleanUp(){
-    $this->getSelenium()->close();
   }
 
   public function __construct($accountName){

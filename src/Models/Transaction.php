@@ -37,4 +37,35 @@ class Transaction extends ActiveRecord{
     }
     parent::save();
   }
+
+  /**
+   * @param Run $run
+   * @param Account $account
+   * @param $merchantName
+   * @param $date
+   * @param $value
+   * @return Transaction
+   */
+  public static function Create(Run $run, Account $account, $merchantName, $date, $value, $state = "Completed"){
+    $transaction = Transaction::search()
+      ->where('account_id', $account->account_id)
+      ->where('name', $merchantName)
+      ->where('occured', $date)
+      ->where('value', $value)
+      ->execOne();
+    if(!$transaction) {
+      $transaction = new Transaction();
+      $transaction->run_id = $run->run_id;
+      $transaction->account_id = $account->account_id;
+      $transaction->name = $merchantName;
+      $transaction->occured = $date;
+      $transaction->value = $value;
+      $transaction->state = $state;
+      $transaction->save();
+      echo "New Transaction.\n";
+    }else{
+      echo "Already Exists.\n";
+    }
+    return $transaction;
+  }
 }

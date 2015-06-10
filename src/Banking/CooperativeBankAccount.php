@@ -4,6 +4,7 @@ namespace Thru\Bank\Banking;
 use Thru\Bank\Models\Account;
 use Thru\Bank\Models\Balance;
 use Thru\Bank\Models\Run;
+use Thru\Bank\Models\Transaction;
 
 class CooperativeBankAccount extends BaseBankAccount {
   protected $baseUrl = "https://personal.co-operativebank.co.uk/CBIBSWeb/start.do";
@@ -132,6 +133,8 @@ class CooperativeBankAccount extends BaseBankAccount {
     $accountsTable = $this->getSelenium()->findElement(\WebDriverBy::cssSelector("td.verttop:nth-child(2) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(5) > td:nth-child(1) > table:nth-child(1)"));
     $accountsTableRows = $accountsTable->findElements(\WebDriverBy::cssSelector("tr"));
     $accountsTableRows = array_slice($accountsTableRows,1);
+    $accountsToCheck = [];
+
     foreach($accountsTableRows as $accountsTableRow){
       $tds = $accountsTableRow->findElements(\WebDriverBy::cssSelector("td"));
 
@@ -155,20 +158,78 @@ class CooperativeBankAccount extends BaseBankAccount {
       $balance->save();
 
       echo "Balance for {$accountNameDisplay} is {$balance->value}\n";
+      $accountsToCheck[] = $accountName;
     }
 
     // Get Transactions
-    foreach($accountsTableRows as $accountsTableRow) {
-      $tds = $accountsTableRow->findElements(\WebDriverBy::cssSelector("td"));
-      $accountName = $tds[0]->getText();
+    foreach($accountsToCheck as $accountName){
+      echo "A";
+      $account = Account::FetchOrCreateByName($accountName);
+      echo "A";
+      $accountsTable = $this->getSelenium()->findElement(\WebDriverBy::cssSelector("td.verttop:nth-child(2) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(5) > td:nth-child(1) > table:nth-child(1)"));
+      echo "A";
+      $accountsTableRows = $accountsTable->findElements(\WebDriverBy::cssSelector("tr"));
+      echo "A";
+      $accountsTableRows = array_slice($accountsTableRows,1);
+      echo "A";
       // Navigate to transaction log
-      $this->getSelenium()->findElement(\WebDriverBy::cssSelector("a[innertext='" . $accountName . "']"))->click();
+      foreach($accountsTableRows as $accountsTableRow) {
+        echo "B";
+
+        $links = $this->getSelenium()->findElements(\WebDriverBy::cssSelector("a[title='click here to go to recent items']"));
+        echo "B2";
+
+        foreach($links as $link) {
+          echo "B3";
+
+          if ($link->getText() == $accountName) {
+            $link->click();
+            break;
+          }
+        }
+        echo "C";
+      }
+
+      unset($accountsTable, $accountsTableRow, $link);
 
       // Get transaction log table
-      $summaryTable = $this->getSelenium()->findElement(\WebDriverBy::cssSelector("table.summaryTable"));
+
+      echo "D";
+      echo "URL2: " . $this->getSelenium()->getCurrentURL() . "\n";
+      try {
+        $summaryTable = $this->getSelenium()->findElement(\WebDriverBy::className("summaryTable"));
+      }catch(\NoSuchElementException $e){
+        // Supress.
+        $summaryTable = false;
+      }
+      if($summaryTable) {
+        $rows = $summaryTable->findElements(\WebDriverBy::cssSelector("tbody tr"));
+        $rows = array_slice($rows, 1, count($rows) - 2);
+        foreach ($rows as $row) {
+          $cells = $row->findElements(\WebDriverBy::tagName("td"));
+          $transactionDate = date("Y-m-d H:i:s", strtotime(trim($cells[0]->getText())));
+          $transactionMerchant = trim($cells[1]->getText());
+          $transactionIn = doubleval(preg_replace("/[^0-9,.]/", "", trim($cells[2]->getText())));
+          $transactionOut = doubleval(preg_replace("/[^0-9,.]/", "", trim($cells[3]->getText())));
+
+          $transaction = Transaction::Create($run, $account, $transactionMerchant, $transactionDate, $transactionIn - $transactionOut);
+
+          echo " > Added Transaction: {$transaction->name} {$transaction->value}\n";
+        }
+      }
+
+      $account->last_check = date("Y-m-d H:i:s");
+      $account->save();
 
       // Back
-      $this->getSelenium()->findElement(\WebDriverBy::cssSelector("a[title='Home']"));
+      $menu = $this->getSelenium()->findElement(\WebDriverBy::cssSelector(".subHeadOuter .subHead .subNav"));
+      $buttons = $menu->findElements(\WebDriverBy::tagName("a"));
+      foreach($buttons as $button){
+        if($button->getText() == "home"){
+          $button->click();
+          break;
+        }
+      }
     }
   }
 }

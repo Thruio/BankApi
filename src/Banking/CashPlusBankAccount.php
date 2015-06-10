@@ -78,21 +78,23 @@ class CashPlusBankAccount extends BaseBankAccount {
     $transactions = [];
     $transactionRows = $transactionTable->findElements(\WebDriverBy::className("StatementGridItemStyle"));
     foreach($transactionRows as $transactionRow){
-      $transaction = new Transaction();
-      $transaction->run_id = $run->run_id;
-      $transaction->account_id = $account->account_id;
-      $transaction->occured = date("Y-m-d H:i:s", strtotime($transactionRow->findElement(\WebDriverBy::className("date"))->getText()));
-      $transaction->name = $transactionRow->findElement(\WebDriverBy::className("merchantName"))->getText();
       $is_credit = $transactionRow->findElement(\WebDriverBy::className('financeType'))->getText() == 'Credit' ? true : false;
       if($is_credit) {
-        $transaction->value = $transactionRow->findElement(\WebDriverBy::className("credit"))->getText();
+        $value = $transactionRow->findElement(\WebDriverBy::className("credit"))->getText();
       }else{
-        $transaction->value = $transactionRow->findElement(\WebDriverBy::className("debit"))->getText();
+        $value = $transactionRow->findElement(\WebDriverBy::className("debit"))->getText();
       }
-      $transaction->value = preg_replace("/[^0-9,.]/", "", $transaction->value);
-      $transaction->state = $pending?"Pending":"Complete";
+      $value = preg_replace("/[^0-9,.-]/", "", $value);
 
-      $transaction->save();
+      $transaction = Transaction::Create(
+        $run,
+        $account,
+        $transactionRow->findElement(\WebDriverBy::className("merchantName"))->getText(),
+        date("Y-m-d H:i:s", strtotime($transactionRow->findElement(\WebDriverBy::className("date"))->getText())),
+        $value,
+        $pending?"Pending":"Complete"
+      );
+
       $transactions[] = $transaction;
     }
     return $transactions;

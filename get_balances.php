@@ -49,4 +49,6 @@ foreach($settings['Accounts'] as $account_name => $details){
   echo "\n\n";
 }
 
+$seleniumDriver->close();
+
 $run->end();
