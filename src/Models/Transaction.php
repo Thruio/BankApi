@@ -47,12 +47,16 @@ class Transaction extends ActiveRecord{
    * @return Transaction
    */
   public static function Create(Run $run, Account $account, $merchantName, $date, $value, $state = "Completed"){
+
+    $value = doubleval(preg_replace("/[^0-9,.]/", "", trim($value)));
+
     $transaction = Transaction::search()
       ->where('account_id', $account->account_id)
       ->where('name', $merchantName)
       ->where('occured', $date)
       ->where('value', $value)
       ->execOne();
+
     if(!$transaction) {
       $transaction = new Transaction();
       $transaction->run_id = $run->run_id;
@@ -63,6 +67,7 @@ class Transaction extends ActiveRecord{
       $transaction->state = $state;
       $transaction->save();
       echo "New Transaction.\n";
+      $run->getLogger()->addInfo("New transaction: {$transaction->name} {$transaction->value} at {$transaction->occured}");
     }else{
       echo "Already Exists.\n";
     }

@@ -1,6 +1,11 @@
 <?php
 
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
 require_once("bootstrap.php");
+
+
 
 $settings = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(APP_ROOT . "/configuration.yml"));
 
@@ -31,8 +36,18 @@ if(isset($settings['Selenium']['BrowserDriver'])){
 
 $seleniumDriver = RemoteWebDriver::create($host, $desiredCapabilities);
 
-$run = new \Thru\Bank\Models\Run();
+$monolog = new Logger("BankAPI");
 
+#$chromeLoggerHandler = new \Monolog\Handler\ChromePHPHandler();
+#$chromeLoggerHandler->setFormatter(new \Monolog\Formatter\ChromePHPFormatter());
+#$monolog->pushHandler($chromeLoggerHandler);
+
+$slackLoggerHandler = new \Monolog\Handler\SlackHandler(SLACK_TOKEN, SLACK_CHANNEL, SLACK_USER, null, null, \Monolog\Logger::DEBUG);
+$slackLoggerHandler->setFormatter(new \Monolog\Formatter\LineFormatter());
+$monolog->pushHandler($slackLoggerHandler);
+
+$run = new \Thru\Bank\Models\Run();
+$run->setLogger($monolog);
 $run->save();
 
 foreach($settings['Accounts'] as $account_name => $details){

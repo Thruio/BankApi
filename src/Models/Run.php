@@ -2,6 +2,7 @@
 
 namespace Thru\Bank\Models;
 
+use Monolog\Logger;
 use Thru\ActiveRecord\ActiveRecord;
 
 /**
@@ -24,6 +25,9 @@ class Run extends ActiveRecord{
   public $created;
   public $updated;
 
+  /** @var Logger */
+  private $_logger;
+
   public function __construct(){
     parent::__construct();
     $this->started = date("Y-m-d H:i:s");
@@ -45,5 +49,14 @@ class Run extends ActiveRecord{
     $this->ended = date("Y-m-d H:i:s");
     $this->exec_time = strtotime($this->ended) - strtotime($this->started);
     $this->save();
+  }
+
+  public function setLogger(Logger $logger){
+    $this->_logger = $logger;
+    return $this;
+  }
+
+  public function getLogger(){
+    return $this->_logger;
   }
 }
