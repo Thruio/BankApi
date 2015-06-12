@@ -60,10 +60,10 @@ RUN cd /app && composer update
 RUN a2enmod rewrite && /etc/init.d/apache2 restart
 
 # Add our crontab file
-ADD crons.conf /root/crons.conf
+ADD crons.conf /crons.conf
 
 # Use the crontab file
-RUN crontab /root/crons.conf
+RUN crontab /crons.conf
 
 # Start cron
 RUN cron
