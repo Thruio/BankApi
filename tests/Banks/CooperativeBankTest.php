@@ -1,7 +1,7 @@
 <?php
 namespace Thru\Bank\Test\Banks;
 
-use Thru\Bank\Banking\CooperativeBankAccount;
+use Thru\BankApi\Banking\CooperativeBankAccount;
 
 class CooperativeBankTest extends \PHPUnit_Framework_TestCase {
   public function setUp(){
