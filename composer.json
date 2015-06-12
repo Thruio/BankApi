@@ -1,9 +1,18 @@
 {
-  "name": "thru.io/bank-api",
+  "name": "thru.io/bank-api-worker",
   "authors": [
     {
         "name": "Matthew Baggett",
         "email": "matthew@baggett.me"
+    }
+  ],
+  "repositories": [
+    {
+      "url": "https://github.com/Thruio/ActiveRecord.git",
+      "type": "git"
+    },{
+      "url": "https://github.com/Thruio/LibBank",
+      "type": "git"
     }
   ],
   "require": {
@@ -11,7 +20,8 @@
     "thru.io/active_record": "dev-master",
     "symfony/yaml": "2.7.0",
     "phpunit/phpunit": "4.7.2",
-    "monolog/monolog": "~1.0"
+    "monolog/monolog": "~1.0",
+    "thru.io/libbank": "dev-master"
   },
   "autoload"   : {
     "psr-4": {

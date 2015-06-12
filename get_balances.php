@@ -5,8 +5,6 @@ use Monolog\Handler\StreamHandler;
 
 require_once("bootstrap.php");
 
-
-
 $settings = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(APP_ROOT . "/configuration.yml"));
 
 if(isset($settings['Selenium']['Host'])) {
@@ -46,28 +44,28 @@ $slackLoggerHandler = new \Monolog\Handler\SlackHandler(SLACK_TOKEN, SLACK_CHANN
 $slackLoggerHandler->setFormatter(new \Monolog\Formatter\LineFormatter());
 $monolog->pushHandler($slackLoggerHandler);
 
-$run = new \Thru\Bank\Models\Run();
+$run = new \Thru\BankApi\Models\Run();
 $run->setLogger($monolog);
 $run->save();
 
 foreach($settings['Accounts'] as $account_name => $details){
   echo "Logging into {$account_name}...\n";
 
-  $account = \Thru\Bank\Models\Account::FetchOrCreateByName($account_name);
+  $account = \Thru\BankApi\Models\Account::FetchOrCreateByName($account_name);
   if(strtotime($account->last_check) >= time() - 60*60){
     echo " > Skipping, ran less than 60 minutes ago.\n\n";
     continue;
   }
-  $connectorName = "\\Thru\\Bank\\Banking\\" . $details['connector'];
+  $connectorName = "\\Thru\\BankApi\\Banking\\" . $details['connector'];
   $connector = new $connectorName($account_name);
-  if(!$connector instanceof \Thru\Bank\Banking\BaseBankAccount){
+  if(!$connector instanceof \Thru\BankApi\Banking\BaseBankAccount){
     throw new Exception("Connector is not instance of BaseBankAccount");
   }
   $connector->setAuth($details['auth']);
   $connector->setSelenium($seleniumDriver);
   try {
     $connector->run($run);
-  }catch(\Thru\Bank\Banking\BankAccountAuthException $authException){
+  }catch(\Thru\BankApi\Banking\BankAccountAuthException $authException){
     echo $authException->getMessage();
   }
 

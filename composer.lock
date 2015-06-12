@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f4f6a743bb07501ab46b7a1b7fb30dc5",
+    "hash": "309710cee3bcf25a6dc095ec0135f1c9",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -1191,6 +1191,33 @@
             "time": "2015-02-18 10:41:12"
         },
         {
+            "name": "thru.io/libbank",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Thruio/LibBank",
+                "reference": "57dd31d0214cec77c2ea87f8f0163d08ea119db2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Thru\\BankApi\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Thru\\BankApi\\Test\\": "tests/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Matthew Baggett",
+                    "email": "matthew@baggett.me"
+                }
+            ],
+            "time": "2015-06-12 13:31:40"
+        },
+        {
             "name": "thru.io/uuid",
             "version": "v1.0",
             "source": {
@@ -1230,7 +1257,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "facebook/webdriver": 20,
-        "thru.io/active_record": 20
+        "thru.io/active_record": 20,
+        "thru.io/libbank": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
