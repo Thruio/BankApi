@@ -7,7 +7,9 @@ $settings = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(APP_ROOT . "/c
 if(isset($settings['Selenium']['Host'])) {
   $host = $settings['Selenium']['Host'];
 }elseif(isset($_SERVER['SELENIUM_ENV_TUTUM_SERVICE_FQDN'])){
-  $host = "http://" . $_SERVER['SELENIUM_ENV_TUTUM_SERVICE_FQDN'] . ":" . $_SERVER['SELENIUM_ENV_SELENIUM_PORT'] . "/wd/hub";
+  $ip = explode("/", $_SERVER['SELENIUM_ENV_TUTUM_IP_ADDRESS'],2);
+  $ip = reset($ip);
+  $host = "http://" . $ip . ":" . $_SERVER['SELENIUM_ENV_SELENIUM_PORT'] . "/wd/hub";
 }else{
   $host = "http://localhost:4444/wd/hub";
 }
