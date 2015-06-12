@@ -4,7 +4,15 @@ require_once("bootstrap.php");
 
 $settings = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(APP_ROOT . "/configuration.yml"));
 
-$host = $settings['Selenium']['Host']; // this is the default
+if(isset($settings['Selenium']['Host'])) {
+  $host = $settings['Selenium']['Host'];
+}elseif(isset($_ENV['SELENIUM_ENV_TUTUM_SERVICE_FQDN'])){
+  $host = "http://" . $_ENV['SELENIUM_ENV_TUTUM_SERVICE_FQDN'] . ":" . $_ENV['SELENIUM_ENV_SELENIUM_PORT'] . "/wd/hub";
+}else{
+  $host = "http://localhost:4444/wd/hub";
+}
+
+echo "Connecting to Selenium at {$host} ... \n";
 if(isset($settings['Selenium']['BrowserDriver'])){
   switch($settings['Selenium']['BrowserDriver']){
     case 'chrome':
