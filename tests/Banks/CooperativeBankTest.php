@@ -10,6 +10,6 @@ class CooperativeBankTest extends \PHPUnit_Framework_TestCase {
 
   public function testInheritance(){
     $a = new CooperativeBankAccount("test");
-    $this->assertTrue(is_subclass_of($a, '\\Thru\\Bank\\Banking\\BaseBankAccount'));
+    $this->assertTrue(is_subclass_of($a, '\\Thru\\BankApi\\Banking\\BaseBankAccount'));
   }
 }
