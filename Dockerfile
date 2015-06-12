@@ -66,7 +66,7 @@ ADD crons.conf /crons.conf
 RUN crontab /crons.conf
 
 # Start cron
-CMD crond -n
+CMD cron
 
 #================================
 # Expose Container's Directories
