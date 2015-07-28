@@ -1,0 +1,7 @@
+#!/usr/bin/env php
+<?php
+
+require_once("bootstrap.php");
+
+$worker = new \Thru\Bank\Worker();
+$worker->run();
