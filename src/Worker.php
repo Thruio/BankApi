@@ -22,18 +22,18 @@ class Worker{
         if(isset($settings['Selenium']['BrowserDriver'])){
           switch($settings['Selenium']['BrowserDriver']){
             case 'chrome':
-              $desiredCapabilities = DesiredCapabilities::chrome();
+              $desiredCapabilities = \DesiredCapabilities::chrome();
               break;
             case 'firefox':
             default:
-              $desiredCapabilities = DesiredCapabilities::firefox();
+              $desiredCapabilities = \DesiredCapabilities::firefox();
               break;
           }
         }else{
-          $desiredCapabilities = DesiredCapabilities::firefox();
+          $desiredCapabilities = \DesiredCapabilities::firefox();
         }
         
-        $seleniumDriver = RemoteWebDriver::create($host, $desiredCapabilities);
+        $seleniumDriver = \RemoteWebDriver::create($host, $desiredCapabilities);
         
         $monolog = new Logger("BankAPI");
         
@@ -60,7 +60,7 @@ class Worker{
           $connectorName = "\\Thru\\BankApi\\Banking\\" . $details['connector'];
           $connector = new $connectorName($account_name);
           if(!$connector instanceof \Thru\BankApi\Banking\BaseBankAccount){
-            throw new Exception("Connector is not instance of BaseBankAccount");
+            throw new \Exception("Connector is not instance of BaseBankAccount");
           }
           $connector->setAuth($details['auth']);
           $connector->setSelenium($seleniumDriver);
