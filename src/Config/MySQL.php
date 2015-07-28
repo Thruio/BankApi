@@ -8,9 +8,9 @@ if (isset($_SERVER['DB_PORT'])) {
     'db_type'     => 'Mysql',
     'db_hostname' => isset($host['hostname'])?$host['hostname']:$host['host'],
     'db_port'     => $host['port'],
-    'db_username' => $_ENV['THRUIO_ENV_MYSQL_USER'],
-    'db_password' => $_ENV['THRUIO_ENV_MYSQL_PASS'],
-    'db_database' => $_ENV['THRUIO_ENV_MYSQL_DATABASE'],
+    'db_username' => $_SERVER['THRUIO_ENV_MYSQL_USER'],
+    'db_password' => $_SERVER['THRUIO_ENV_MYSQL_PASS'],
+    'db_database' => $_SERVER['THRUIO_ENV_MYSQL_DATABASE'],
     ));
 } else {
   $database = new \Thru\ActiveRecord\DatabaseLayer(array(
