@@ -11,8 +11,8 @@ class Worker{
 
         if(isset($settings['Selenium']['Host'])) {
           $host = $settings['Selenium']['Host'];
-        }elseif(isset($_ENV['SELENIUM_PORT'])){
-          $host = parse_url($_ENV['SELENIUM_PORT']);
+        }elseif(isset($_SERVER['SELENIUM_PORT'])){
+          $host = parse_url($_SERVER['SELENIUM_PORT']);
           $host = "http://" . $host['host'] . ":" . $host['port'] . "/wd/hub";
         }else{
           $host = "http://localhost:4444/wd/hub";
