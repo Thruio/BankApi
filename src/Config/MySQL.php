@@ -1,8 +1,8 @@
 <?php
 
 // Database Settings
-if (isset($_ENV['DB_PORT'])) {
-  $host = parse_url($_ENV['DB_PORT']);
+if (isset($_SERVER['DB_PORT'])) {
+  $host = parse_url($_SERVER['DB_PORT']);
 
     $database = new \Thru\ActiveRecord\DatabaseLayer(array(
     'db_type'     => 'Mysql',
