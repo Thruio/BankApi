@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 cd /app/;
-cron;
 php get_balances.php;
 
 chown www-data:www-data /app -R

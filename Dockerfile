@@ -1,5 +1,7 @@
-FROM ubuntu:trusty
+FROM phusion/baseimage:latest
 MAINTAINER Matthew Baggett <matthew@baggett.me>
+
+CMD ["/sbin/my_init"]
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
@@ -40,6 +42,15 @@ ENV TZ "Europe/London"
 RUN echo $TZ | tee /etc/timezone \
   && dpkg-reconfigure --frontend noninteractive tzdata
 
+# Run Composer
+RUN cd /app && composer update
+
+# Run NPM install
+#RUN cd /app && npm install
+
+# Enable mod_rewrite
+RUN a2enmod rewrite && /etc/init.d/apache2 restart
+
 # Add image configuration and scripts
 ADD run.sh /run.sh
 RUN chmod 755 /*.sh
@@ -49,15 +60,6 @@ RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 ADD . /app
 #ADD .htaccess /app/.htaccess
 ADD ApacheConfig.conf /etc/apache2/sites-enabled/000-default.conf
-
-# Run Composer
-RUN cd /app && composer update
-
-# Run NPM install
-#RUN cd /app && npm install
-
-# Enable mod_rewrite
-RUN a2enmod rewrite && /etc/init.d/apache2 restart
 
 # Add our crontab file
 ADD crons.conf /crons.conf
