@@ -1,15 +1,17 @@
 Selenium:
-    Host: http://localhost:4444/wd/hub
-    BrowserDriver: firefox
-Accounts:
-    Business Account:
+  Host: http://localhost:4444/wd/hub
+  BrowserDriver: firefox
+People:
+  - Name: "Matthew Baggett"
+    Accounts:
+      Business Account:
         connector: CashPlusBankAccount
         auth:
-            username: 'username'
-            password: 'password'
-    Account Name Here:
+          username: 'username'
+          password: 'password'
+      Account Name Here:
         connector: CooperativeBankAccount
-        auth:
+          auth:
             sort: '012345'
             acct: '98765432'
             security: '0000'
