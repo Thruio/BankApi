@@ -1206,7 +1206,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Thruio/LibBank",
-                "reference": "f75007ada1bb2652d644027ae7e03e3ee04c3b4a"
+                "reference": "1a800c1c5199b45de9fe85643898e51a44332ab0"
             },
             "type": "library",
             "autoload": {
@@ -1225,7 +1225,7 @@
                     "email": "matthew@baggett.me"
                 }
             ],
-            "time": "2015-08-03 16:38:44"
+            "time": "2015-08-03 16:42:18"
         },
         {
             "name": "thru.io/uuid",
