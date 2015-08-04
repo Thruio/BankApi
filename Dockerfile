@@ -42,12 +42,6 @@ ENV TZ "Europe/London"
 RUN echo $TZ | tee /etc/timezone \
   && dpkg-reconfigure --frontend noninteractive tzdata
 
-# Run Composer
-RUN cd /app && composer update
-
-# Run NPM install
-#RUN cd /app && npm install
-
 # Enable mod_rewrite
 RUN a2enmod rewrite && /etc/init.d/apache2 restart
 
@@ -60,6 +54,12 @@ RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 ADD . /app
 #ADD .htaccess /app/.htaccess
 ADD ApacheConfig.conf /etc/apache2/sites-enabled/000-default.conf
+
+# Run Composer
+RUN cd /app && composer update
+
+# Run NPM install
+#RUN cd /app && npm install
 
 # Add our crontab file
 ADD crons.conf /crons.conf
