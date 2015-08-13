@@ -70,11 +70,6 @@ RUN crontab /crons.conf
 # Start cron
 CMD cron
 
-#================================
-# Expose Container's Directories
-#================================
-VOLUME /var/log
-
 EXPOSE 80
 
 WORKDIR /app
