@@ -55,23 +55,18 @@ class Worker{
             $run->setLogger($monolog);
             $run->save();
 
-            foreach ($person['Accounts'] as $account_name => $details) {
-                echo "Logging into {$person['Name']}'s {$account_name}...\n";
+            foreach ($person['Accounts'] as $account_label => $details) {
+                echo "Logging into {$person['Name']}'s {$account_label}...\n";
 
-                $account = Account::FetchOrCreateByName($accountHolder, $account_name);
-                if (strtotime($account->last_check) >= time() - 60 * 60) {
-                    echo " > Skipping, ran less than 60 minutes ago.\n\n";
-                    continue;
-                }
                 $connectorName = "\\Thru\\BankApi\\Banking\\" . $details['connector'];
-                $connector = new $connectorName($account_name);
+                $connector = new $connectorName($account_label);
                 if (!$connector instanceof BaseBankAccount) {
                     throw new \Exception("Connector is not instance of BaseBankAccount");
                 }
                 $connector->setAuth($details['auth']);
                 $connector->setSelenium($seleniumDriver);
                 try {
-                    $connector->run($accountHolder, $run);
+                    $connector->run($accountHolder, $run, $account_label);
                 } catch (BankAccountAuthException $authException) {
                     echo $authException->getMessage();
                 }
