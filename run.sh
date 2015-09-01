@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd /app/;
-php get_balances.php;
+./get_balances;
 
 chown www-data:www-data /app -R
 source /etc/apache2/envvars
