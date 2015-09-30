@@ -48,6 +48,8 @@ class Worker{
         }
 
 
+
+
         foreach($settings['People'] as $person) {
             $accountHolder = AccountHolder::FetchOrCreateByName($person['Name']);
             $seleniumDriver = \RemoteWebDriver::create($host, $desiredCapabilities);
@@ -69,6 +71,8 @@ class Worker{
                 $run->setTelegram($telegram);
             }
             $run->save();
+
+            $run->getLogger()->addInfo("Running check for balances...");
 
             foreach ($person['Accounts'] as $account_label => $details) {
                 echo "Logging into {$person['Name']}'s {$account_label}...\n";
