@@ -22,7 +22,8 @@
     "phpunit/phpunit": "4.7.2",
     "monolog/monolog": "~1.0",
     "thru.io/libbank": "dev-master",
-    "raveren/kint": "^1.0"
+    "raveren/kint": "^1.0",
+    "telegram-bot/api": "^2.2"
   },
   "autoload"   : {
     "psr-4": {

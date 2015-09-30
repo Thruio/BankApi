@@ -1,3 +1,8 @@
+Telegram:
+  BotToken: BOT TOKEN HERE
+  Channels:
+    CHANNELHERE
+
 Selenium:
   Host: http://localhost:4444/wd/hub
   BrowserDriver: firefox

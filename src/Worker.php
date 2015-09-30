@@ -36,6 +36,18 @@ class Worker{
         }else{
           $desiredCapabilities = \DesiredCapabilities::firefox();
         }
+        if($settings['Telegram']){
+            $bot = new \TelegramBot\Api\BotApi($settings['Telegram']['BotToken']);
+            $telegram = function($message) use ($bot, $settings){
+                if(count($settings['Telegram']['Channels']) > 0) {
+                    foreach ($settings['Telegram']['Channels'] as $chat_id) {
+                        $bot->sendMessage($chat_id, $message);
+                    }
+                }
+            };
+        }
+
+
         foreach($settings['People'] as $person) {
             $accountHolder = AccountHolder::FetchOrCreateByName($person['Name']);
             $seleniumDriver = \RemoteWebDriver::create($host, $desiredCapabilities);
@@ -53,6 +65,9 @@ class Worker{
 
             $run = new \Thru\BankApi\Models\Run();
             $run->setLogger($monolog);
+            if($telegram) {
+                $run->setTelegram($telegram);
+            }
             $run->save();
 
             foreach ($person['Accounts'] as $account_label => $details) {
