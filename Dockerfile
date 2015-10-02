@@ -1,8 +1,6 @@
 FROM phusion/baseimage:latest
 MAINTAINER Matthew Baggett <matthew@baggett.me>
 
-CMD ["/sbin/my_init"]
-
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
@@ -49,6 +47,9 @@ ADD . /app
 # Run Composer
 RUN cd /app && composer install
 
+# Fix file permissions on crontab?
+RUN chmod 600 /etc/crontab
+
 WORKDIR /app
 
-
+CMD ["/sbin/my_init"]
