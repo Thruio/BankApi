@@ -13,12 +13,12 @@ if (isset($environment['MYSQL_PORT'])) {
     'db_database' => $environment['MYSQL_ENV_MYSQL_DATABASE'],
     ));
 } else {
-  $database = new \Thru\ActiveRecord\DatabaseLayer(array(
+    $database = new \Thru\ActiveRecord\DatabaseLayer(array(
     'db_type'     => 'Mysql',
     'db_hostname' => "localhost",
     'db_port'     => 3306,
     'db_username' => "bankingapp",
     'db_password' => "2l429q6Zug96iVU",
     'db_database' => "bankingapp",
-  ));
+    ));
 }
