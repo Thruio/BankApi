@@ -7,10 +7,11 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 # Install base packages
 RUN apt-get update && \
     apt-get -yq install \
+        mysql-client \
         wget \
         curl \
         nano \
-	php5-cli \
+	    php5-cli \
         php5-mysql \
         php5-gd \
         php5-curl \
